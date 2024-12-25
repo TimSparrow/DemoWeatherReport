@@ -17,7 +17,10 @@ class SubscriptionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'uv' => fake()->randomFloat(),
+            'precipitation' => fake()->randomFloat(),
+            'email' => fake()->boolean(),
+            'whatsapp' => fake()->boolean(),
         ];
     }
 }
