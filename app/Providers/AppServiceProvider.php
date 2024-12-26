@@ -2,23 +2,13 @@
 
 namespace App\Providers;
 
+use App\Services\Weather\WeatherReporterInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Services\Weather\NWS\WeatherReporter as NWSWeatherReporter;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        //
-    }
+    public $bindings = [
+        WeatherReporterInterface::class => NWSWeatherReporter::class,
+    ];
 }

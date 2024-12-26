@@ -3,13 +3,17 @@
 namespace App\Services;
 
 use App\Models\Subscription;
-use App\Services\Weather\WeatherReportInterface;
+use App\Models\User;
+use App\Services\Weather\WeatherReporterInterface;
 use Dotenv\Parser\Parser;
 
 class ReportSender
 {
+
+    private int $days;
+
     public function __construct(
-        private readonly WeatherReportInterface $weatherReport,
+        private readonly WeatherReporterInterface $weatherReport,
     ){}
 
     public function sendAlerts(): void
@@ -22,15 +26,28 @@ class ReportSender
         $subscriptions = Subscription::getActiveForEMail();
 
         foreach ($subscriptions as $subscription) {
-            $email = $subscription->email;
+
             $alerts = $subscription->getAlerts();
-            $this->sendAlertsForUser($email, $alerts, $days);
+
+            $this->sendAlertsForUser($subscription->user, $alerts, $this->days);
         }
     }
 
-    private function sendAlertsForUser(string $email, array $alerts, int $days): void
+    private function sendAlertsForUser(User $user, array $alerts, int $days): void
     {
-        $reports = $this->weatherReport->getReportForPeriod();
+        $reports = $this->weatherReport->getReportForPeriod($user->getLocation(), $days);
+
+    }
+
+    public function getDays(): int
+    {
+        return $this->days;
+    }
+
+    public function setDays(int $days): ReportSender
+    {
+        $this->days = $days;
+        return $this;
     }
 
 }
