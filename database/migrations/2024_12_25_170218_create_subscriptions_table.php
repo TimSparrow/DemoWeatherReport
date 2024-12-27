@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user')->index('ndxUser');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
             $table->boolean('active')->default(true);
             $table->dateTime('active_from')->nullable();
