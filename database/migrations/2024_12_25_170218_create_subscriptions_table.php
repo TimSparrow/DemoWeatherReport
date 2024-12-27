@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Weather\WeatherAlert;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,15 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->integer('user')->index('ndxUser');
             $table->timestamps();
-            $table->float('uv')->default(0.0)->comment('Level of UV triggering the alert');
-            $table->float('precipitation')->default(0.0)->comment('Level of precipitation triggering the alert');
-            $table->boolean('email')->default(false)->comment('Deliverable by email');
-            $table->boolean('whatsapp')->default(false)->comment('Deliverable by whatsapp message');
+            $table->boolean('active')->default(true);
+            $table->dateTime('active_from')->nullable();
+            $table->dateTime('active_to')->nullable();
+            $table->enum('condition', WeatherAlert::getAlerts());
+            $table->string('delivery')->default('email');
+
+            $table->unique(['user', 'condition', 'delivery']);
         });
 
         // add a phone number to user model

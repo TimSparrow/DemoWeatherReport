@@ -7,6 +7,11 @@ use App\Services\Weather\WeatherInterface;
 class Report implements WeatherInterface
 {
 
+    public function __construct()
+    {
+
+    }
+
     public function hasAlert(string $alert): bool
     {
         // TODO: Implement hasAlert() method.
