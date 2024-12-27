@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Creates a table for alert subscriptions
+     * A subscription connects one user to one alert and one delivery method
+     * A subscription may be suspended (active=false) or expire (active_to)
      */
     public function up(): void
     {
